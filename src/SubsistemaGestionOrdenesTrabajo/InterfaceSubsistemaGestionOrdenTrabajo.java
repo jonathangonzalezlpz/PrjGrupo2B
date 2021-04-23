@@ -1,4 +1,4 @@
-package project;
+package SubsistemaGestionOrdenesTrabajo;
 
 public interface InterfaceSubsistemaGestionOrdenTrabajo {
     //Crea una nueva orden de trabajo y la almacena en el sistema

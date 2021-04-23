@@ -1,4 +1,4 @@
-package project;
+package SubsistemaGestionProcesos;
 
 import java.util.ArrayList;
 

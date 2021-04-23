@@ -1,4 +1,4 @@
-package project;
+package SubsistemaAnalisisYEstadisticas;
 
 public interface InterfaceSubsistemaAnalisisEstadisticas {
     
