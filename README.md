@@ -8,5 +8,4 @@ PASOS ACTUALIZAR:
   - git pull #(Recomendado)
   - git push origin main
 
-- git restore
   
