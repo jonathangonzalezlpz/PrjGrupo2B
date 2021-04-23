@@ -2,6 +2,8 @@ package SubsistemaGestionIncidencias;
 
 import java.util.ArrayList;
 
+import Model.Incidencia;
+
 public interface InterfaceSubsistemaGestionIncidencias {
     //Crea una nueva incidencia y la almacena en el sistema
     public Incidencia crear(Incidencia incidencia);

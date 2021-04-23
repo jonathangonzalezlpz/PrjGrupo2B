@@ -2,6 +2,10 @@ package SubsistemaGestionProcesos;
 
 import java.util.ArrayList;
 
+import Model.Incidencia;
+import Model.OrdenTrabajo;
+import Model.Proceso;
+
 public interface InterfaceSubsistemaGestionProcesos {
     //Crea un nuevo proceso y lo almacena en el sistema
     public Proceso crear(Proceso proceso);

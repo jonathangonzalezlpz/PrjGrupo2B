@@ -1,5 +1,8 @@
 package SubsistemaGestionOrdenesTrabajo;
 
+import Model.OrdenTrabajo;
+import Model.Presupuesto;
+
 public interface InterfaceSubsistemaGestionOrdenTrabajo {
     //Crea una nueva orden de trabajo y la almacena en el sistema
     public OrdenTrabajo crear(OrdenTrabajo ordenTrabajo);
