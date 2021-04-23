@@ -7,4 +7,6 @@ PASOS ACTUALIZAR:
   - git commit -m "Mensaje aclaratorio"
   - git pull #(Recomendado)
   - git push origin main
+
+- git restore
   
