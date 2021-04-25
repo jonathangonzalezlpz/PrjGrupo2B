@@ -22,8 +22,27 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 	public Proceso inicializar(Integer identificador, String nombreProceso, String descripcion, Double coste,
 			Double estimado, String estado, String responsable, String servicio, ArrayList<Incidencia> incidencias,
 			ArrayList<OrdenTrabajo> ordenesTrabajo, Date fechaInicio) throws CustomException{
-		// TODO Auto-generated method stub
-		return null;
+		
+				
+		if(identificador!=null && identificador<0) {
+			throw new CustomException("El identificador no puede ser negativo",1);
+		}else if(nombreProceso!=null && nombreProceso.length()>100) {
+			throw new CustomException("Nombre superior a 100 characters",1);
+		}else if(descripcion!=null && descripcion.length()>500) {
+			throw new CustomException("Descipcion superior a 500 characters",1);
+		}else if(responsable!=null && responsable.length()>100) {
+			throw new CustomException("Responsable superior a 100 characters",1);
+		}else if(estado!=null && !_estadoValido(estado)) {
+			//Estado no existente
+			//Por defecto será "Pendiente"
+			estado="Pendiente";
+		}else if(servicio!=null && !_servicioValido(servicio)) {
+			//Servicio no existente
+			//Por defecto será "Otro"
+			servicio="Otro";
+		}
+		
+		return new Proceso(identificador,nombreProceso,descripcion,coste,estimado,estado,responsable,servicio,incidencias,ordenesTrabajo,fechaInicio);
 	}
 
 	@Override
@@ -38,6 +57,8 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 				throw new CustomException("Id ya registrado", 2);
 			}else if(_camposObligatorios(proceso)) {
 				throw new CustomException("Faltan campos Obligatorios {id, nombre, descripcion , estimado, estado, responsable, servicio, fechaInicio}",1);
+			}else if(!proceso.getEstado().equals("Pendiente")) {
+				throw new CustomException("El estado no puede ser distinto de Pendiente",1);
 			}
 		}
 		
@@ -84,6 +105,22 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 				proceso.getEstimado()==null || proceso.getEstado()==null || proceso.getFechaInicio()==null ||
 				proceso.getResponsable()==null || proceso.getServicio()==null)
 			return true;
+		return false;
+	}
+	
+	private Boolean _estadoValido(String estado) {
+		String [] tipoEstado=Proceso.tipoEstado;
+		for(String tipo:tipoEstado)
+			if(tipo.equals(estado))
+				return true;
+		return false;
+	}
+	
+	private Boolean _servicioValido(String servicio) {
+		String [] tipoServicio=Proceso.tipoServicio;
+		for(String tipo:tipoServicio)
+			if(tipo.equals(servicio))
+				return true;
 		return false;
 	}
 
