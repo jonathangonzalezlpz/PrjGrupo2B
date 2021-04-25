@@ -17,7 +17,8 @@ public interface InterfaceSubsistemaGestionOrdenTrabajo {
 
           //Devuelve un objeto Presupuesto con los campos inicializados que se indiquen
     public Presupuesto inicializar(Integer identificador, String empresa, Double presupuesto,
-    		Date fechaInicio, Integer duracion, ArrayList<String> material, Integer personal) throws CustomException;
+    		Date fechaInicio, Integer duracion, ArrayList<String> material, Integer personal,
+    		Integer idOT) throws CustomException;
     
     //Crea una nueva orden de trabajo y la almacena en el sistema
     public OrdenTrabajo crear(OrdenTrabajo ordenTrabajo) throws CustomException;

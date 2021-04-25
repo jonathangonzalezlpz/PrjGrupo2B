@@ -6,6 +6,8 @@ package Exception;
  * y un codigo:
  * 	1- Campo no válido.
  * 	2- Conflicto.
+ *  3- No autorizado.
+ *  4- Not Found
  */
 public class CustomException extends Exception{
 	

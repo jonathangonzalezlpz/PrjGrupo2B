@@ -14,11 +14,9 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 
 	//ARRAYS ALMACENAMIENTO
 	private HashMap<Integer, OrdenTrabajo> OTs;
-	private HashMap<Integer, Presupuesto> presupuestos;
 	
 	public SubsistemaGestionOrdenTrabajo() {
 		this.OTs = new HashMap<>();
-		this.presupuestos = new HashMap<>();
 	}
 	
 	//MÉTODOS
@@ -35,17 +33,17 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 		//duracion negativa
 		//estado no valido
 		if(identificador < 0) {
-			throw new CustomException(1, "Identificador negativo");
+			throw new CustomException("Identificador negativo", 1);
 		}else if(descripcion.length() > 500) {
-			return new OrdenTrabajo(null, null, null, null, null, null, null, null, null, null, null);
+			throw new CustomException("Descripcion superior a 500 chars", 1);
 		}else if(!(_alfabetico(responsable))) {
-			return new OrdenTrabajo(null, null, null, null, null, null, null, null, null, null, null);
+			throw new CustomException("Responsable no alfabetico", 1);
 		}else if(personal < 0) {
-			return new OrdenTrabajo(null, null, null, null, null, null, null, null, null, null, null);
+			throw new CustomException("Personal negativo", 1);
 		}else if(duracion < 0) {
-			return new OrdenTrabajo(null, null, null, null, null, null, null, null, null, null, null);
+			throw new CustomException("Duracion negativo", 1);
 		}else if(!_estadoValido(estado)) {
-			return new OrdenTrabajo(null, null, null, null, null, null, null, null, null, null, null);
+			throw new CustomException("Estado no válido", 1);
 		}
 			
 		//Todo bien, null...
@@ -54,7 +52,10 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 
 	@Override
 	public Presupuesto inicializar(Integer identificador, String empresa, Double presupuesto, Date fechaInicio,
-			Integer duracion, ArrayList<String> material, Integer personal) {
+			Integer duracion, ArrayList<String> material, Integer personal, Integer idOT) throws CustomException{
+		if(!this.OTs.containsKey(idOT)) { //Conflicto
+			throw new CustomException("Conflito, id presupuesto registrado", 2);
+		}
 		//id existente
 		//id negativo
 		//empresa > 100 chars
@@ -63,40 +64,168 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 		//fecha anterior a actual
 		//duracion negativa
 		//personal negativo
-		if(this.presupuestos.containsKey(identificador) || identificador < 0 || empresa.length() > 100 || 
-				presupuesto < 0 || _fechaValida(fechaInicio) || duracion < 0 || personal < 0)
-			return new Presupuesto(null, null, null, null, null, null, null);
+		if(identificador==null || empresa == null || presupuesto == null || fechaInicio == null || duracion == null || material == null || personal == null) {
+			throw new CustomException("Campos nulos", 1);
+		}
+		else if(_contener(idOT,identificador)) {
+			throw new CustomException("Id ya registrado", 2);
+		}else if(identificador < 0) {
+			throw new CustomException("Identificador negativo", 1);
+		}else if(empresa.length() > 100) {
+			throw new CustomException("Identificador negativo", 1);
+		}else if(presupuesto < 0) {
+			throw new CustomException("Identificador negativo", 1);
+		}else if(_fechaValida(fechaInicio)) {
+			throw new CustomException("Identificador negativo", 1);
+		}else if(duracion < 0){
+			throw new CustomException("Identificador negativo", 1);
+		}else if(personal < 0) {
+			throw new CustomException("Identificador negativo", 1);
+		}
+				
 		//todo bien, null...
 		//se añade al sistema
 		Presupuesto p = new Presupuesto(identificador, empresa, presupuesto, fechaInicio, duracion, material, personal);
-		this.presupuestos.put(identificador, p);
+		this.OTs.get(idOT).getPresupuesto().add(p);
 		return p;
 	}
 	
 	@Override
-	public OrdenTrabajo crear(OrdenTrabajo ordenTrabajo) {
-		if(ordenTrabajo == null)
-			return new OrdenTrabajo(null, null, null, null, null, null, null, null, null, null, null);
+	public OrdenTrabajo crear(OrdenTrabajo ordenTrabajo) throws CustomException{
+		if(ordenTrabajo == null) {
+			throw new CustomException("OT nula", 1);
+		}else { //OT no nula
+			if(_isNula(ordenTrabajo)) { //todos los campos nulos
+				throw new CustomException("OT con todos los campos nulos", 1);
+			}else if(ordenTrabajo.getIdentificador()==null || ordenTrabajo.getDescripcion()==null || ordenTrabajo.getEstado()==null) { //Obligatios
+				throw new CustomException("Faltan campos Obligatorios {id, descripcion ,estado}",1);
+			}else if(!ordenTrabajo.getPresupuesto().isEmpty()) { 
+				throw new CustomException("No se pueden incorporar presupeustos en la creación",1);
+			}else if(ordenTrabajo.getEstado().equals("Pendiente Asignación")) {
+				throw new CustomException("El estado no puede ser distinto de Pendiente asignación", 1);
+			}else if(this.OTs.containsKey(ordenTrabajo.getIdentificador())) //Conflicto
+				throw new CustomException("Id ya registrado", 2);
+		}
+		
 		//éxito
 		this.OTs.put(ordenTrabajo.getIdentificador(), ordenTrabajo);
 		return ordenTrabajo;
 	}
 
 	@Override
-	public OrdenTrabajo gestionarRecursos(OrdenTrabajo ordenTrabajo) {
-		// TODO Auto-generated method stub
-		return null;
+	public OrdenTrabajo gestionarRecursos(OrdenTrabajo ordenTrabajo) throws CustomException{
+		Boolean cambioCoste = false, cambioPersonal = false, cambioMateriales = false, cambioDuracion = false, cambioEstado = false;
+		
+		if(ordenTrabajo == null ) {
+			throw new CustomException("OT nula", 1);
+		}else if(_isNula(ordenTrabajo)) { //todos los campos nulos
+			throw new CustomException("OT con todos los campos nulos", 1);
+		}else if(this.OTs.containsKey(ordenTrabajo.getIdentificador())) {
+			throw new CustomException("OT no registrada", 4);
+		}else if(!_modValida(ordenTrabajo)) {
+			throw new CustomException("Modificacion no permitida", 3);
+		}
+		
+		//Efectuamos las modificaciones
+		if(ordenTrabajo.getCoste()!= null) {
+			if(ordenTrabajo.getCoste()<0) {
+				throw new CustomException("Coste negativo", 1);
+			}
+			cambioCoste = true;
+		}
+		if(ordenTrabajo.getMaterial()!=null) {
+			if(ordenTrabajo.getMaterial().isEmpty()){
+				throw new CustomException("Materiales no pueden ser vacios", 1);
+			}
+			cambioMateriales = true;
+		}
+		if(ordenTrabajo.getPersonal()!=null) {
+			if(ordenTrabajo.getPersonal()<=0) {
+				throw new CustomException("Personal no valido", 1);
+			}
+			cambioPersonal = true;
+		}
+		if(ordenTrabajo.getDuracion()!=null) {
+			if(ordenTrabajo.getDuracion()<=0) {
+				throw new CustomException("Duracion no valida", 1);
+			}
+			cambioDuracion = true;
+		}
+		if(ordenTrabajo.getEstado()!=null) {
+			if(ordenTrabajo.getEstado().equals("En curso") || ordenTrabajo.getEstado().equals("Finalizado"))
+				cambioEstado = true;
+			else
+				throw new CustomException("Estado no valido", 1);
+		}
+		
+		OrdenTrabajo modificada = this.OTs.get(ordenTrabajo.getIdentificador());
+		//Ejecutamos las modificaciones
+		if(cambioCoste) {
+			modificada.setCoste(ordenTrabajo.getCoste());
+		}
+		if(cambioMateriales) {
+			modificada.setMaterial(ordenTrabajo.getMaterial());
+		}
+		if(cambioPersonal) {
+			modificada.setPersonal(ordenTrabajo.getPersonal());
+		}
+		if(cambioDuracion) {
+			modificada.setDuracion(ordenTrabajo.getDuracion());
+		}
+		if(cambioEstado) {
+			modificada.setEstado(ordenTrabajo.getEstado());
+		}
+		return modificada;
 	}
 
 	@Override
-	public OrdenTrabajo asignarEmpresa(OrdenTrabajo ordenTrabajo, Presupuesto presupuesto) {
-		// TODO Auto-generated method stub
-		return null;
+	public OrdenTrabajo asignarEmpresa(OrdenTrabajo ordenTrabajo, Presupuesto presupuesto) throws CustomException{
+		//Comprobamos la orden de trabajo
+		if(ordenTrabajo==null) {
+			throw new CustomException("OrdenTrabajo nula", 1);
+		}else if(this._isNula(ordenTrabajo)) {
+			throw new CustomException("OT con todos los campos nulos", 1);
+		}else if(!this.OTs.containsKey(ordenTrabajo.getIdentificador())){
+			throw new CustomException("OT no registrada", 4);
+		}else if(!this.OTs.get(ordenTrabajo.getIdentificador()).getDescripcion().equals(ordenTrabajo.getDescripcion())) {
+			throw new CustomException("La información no coincide con la almacenada", 2);
+		}else if(this.OTs.get(ordenTrabajo).getPresupuesto().size()<3) {
+			throw new CustomException("La OT no presenta el mínimo de 3 presupuestos para la selección", 3);
+		}
+		
+		//Comprobamos presupuesto
+		if(presupuesto==null) {
+			throw new CustomException("Presupuesto nulo", 1);
+		}else if(presupuesto.getIdentificador()!=null) {
+			throw new CustomException("Presupuesto con id nulo", 1);
+		}else if(!this._contener(ordenTrabajo.getIdentificador(),presupuesto.getIdentificador())){
+			throw new CustomException("Presupuesto no registrado en la OT", 4);
+		}
+		
+		
+		//todo va bien, pasa comprobaciones
+		//Actualizamos información
+		OrdenTrabajo modificada = this.OTs.get(ordenTrabajo.getIdentificador());
+		Presupuesto seleccionado = null;
+		for(Presupuesto p: modificada.getPresupuesto()) {
+			if(p.getIdentificador().equals(presupuesto.getIdentificador())) {
+				seleccionado = p; 
+				break;
+			}
+		}
+		modificada.setResponsable(seleccionado.getEmpresa());
+		modificada.setCoste(seleccionado.getPresupuesto());
+		modificada.setMaterial(seleccionado.getMaterial());
+		modificada.setFechaInicio(seleccionado.getFechaInicio());
+		modificada.setDuracion(seleccionado.getDuracion());
+		modificada.setPersonal(seleccionado.getPersonal());
+		modificada.setEstado("Asignada");
+		return modificada;
 	}
 
 	@Override
 	public OrdenTrabajo buscar(OrdenTrabajo filtro) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -123,6 +252,40 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 		if(fecha.before(date))
 			return false;
 		return true;
+	}
+	
+	private Boolean _isNula(OrdenTrabajo ot) {
+		if(ot.getIdentificador()==null && ot.getDescripcion()==null && ot.getMaterial()==null && ot.getPresupuesto()==null && 
+				ot.getCoste()==null && ot.getResponsable()==null && ot.getPersonal()==null && ot.getFechaInicio()==null &&
+				ot.getDuracion()==null && ot.getEstado()==null && ot.getProceso()==null)
+			return true;
+		return false;
+	}
+	
+	private Boolean _contener(Integer idOT, Integer identificador) {
+		for(Presupuesto p: this.OTs.get(idOT).getPresupuesto()) {
+			if(p.getIdentificador().equals(identificador)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private Boolean _modValida(OrdenTrabajo ot) {
+		OrdenTrabajo original = this.OTs.get(ot.getIdentificador());
+		//Modifica la descripcion o el responsable
+		if(original.getDescripcion().equals(ot.getDescripcion()) &&
+				original.getResponsable().equals(ot.getResponsable())) {
+			if(!ot.getPresupuesto().isEmpty()) { //Comprobamos presupuestos
+				for(Presupuesto p: ot.getPresupuesto()) {
+					if(!original.getPresupuesto().contains(p)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	 
 
