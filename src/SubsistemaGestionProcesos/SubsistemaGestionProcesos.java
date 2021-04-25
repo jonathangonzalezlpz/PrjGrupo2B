@@ -17,6 +17,7 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		this.procesos=new HashMap<>();
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Métodos
 	@Override
 	public Proceso inicializar(Integer identificador, String nombreProceso, String descripcion, Double coste,
@@ -69,7 +70,28 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 
 	@Override
 	public Proceso actualizar(Proceso proceso) {
-		// TODO Auto-generated method stub
+		if(proceso!=null) {
+			if(this.procesos.containsKey(proceso.getIdentificador())) {
+				Proceso anterior=this.procesos.get(proceso.getIdentificador());
+				if(proceso.getNombre()!=null) 
+					anterior.setNombre(proceso.getNombre());
+				if(proceso.getDescripcion()!=null)
+					anterior.setDescripcion(proceso.getDescripcion());
+				if(proceso.getCoste()!=null)
+					anterior.setCoste(proceso.getCoste());
+				if(proceso.getEstimado()!=null)
+					anterior.setEstimado(proceso.getEstimado());
+				if(proceso.getEstado()!=null)
+					anterior.setEstado(proceso.getEstado());
+				if(proceso.getResponsable()!=null)
+					anterior.setResponsable(proceso.getResponsable());
+				if(proceso.getServicio()!=null)
+					anterior.setServicio(proceso.getServicio());
+				
+				//TEN SENTIDO CAMBIAR A FECHA INICIO¿?¿?¿?¿?¿?¿?
+				//TEN SENTIDO CAMBIAR AQUÍ INCIDENCIAS E ORDENES TRABAJO CANDO XA HAI MÉTODOS PARA ASIGNAR ¿??¿?¿?¿?¿?
+			}
+		}
 		return null;
 	}
 
@@ -91,6 +113,7 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		return null;
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Métodos privados
 	private Boolean _camposNulos(Proceso proceso) {
 		if(proceso.getIdentificador()==null && proceso.getNombre()==null && proceso.getDescripcion()==null && 
