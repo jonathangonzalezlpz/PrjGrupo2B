@@ -26,13 +26,13 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 			ArrayList<Presupuesto> presupuestos, Double coste, String responsable, Integer personal, 
 			Date fechaInicio,Integer duracion, String estado, Proceso proceso) throws CustomException{
 		//Casos erroneos
-		//id negativo
-		//descripcion mayor de 500 chars 
-		//responsable no alfabetico
-		//personal negativo
-		//fecha formato incorrecto salta al crear Objeto Date
-		//duracion negativa
-		//estado no valido
+			//id negativo
+			//descripcion mayor de 500 chars 
+			//responsable no alfabetico
+			//personal negativo
+			//fecha formato incorrecto salta al crear Objeto Date
+			//duracion negativa
+			//estado no valido
 		if(identificador != null && identificador < 0) {
 			throw new CustomException("Identificador negativo", 1);
 		}else if(descripcion != null && descripcion.length() > 500) {

@@ -15,8 +15,26 @@ public class Proceso {
 	private String responsable;
 	private String servicio;
 	private Date fechaInicio;
+	private ArrayList<OrdenTrabajo> ordenesTrabajo;
+	private ArrayList<Incidencia> incidencias;
 	
 	public Proceso() {
+	}
+	
+	public Proceso(Integer identificador, String nombreProceso, String descripcion, 
+			Double coste, Double estimado, String estado, String responsable, String servicio, 
+			ArrayList<Incidencia> incidencias, ArrayList<OrdenTrabajo> ordenesTrabajo, Date fechaInicio) {
+		this.identificador=identificador;
+		this.nombre=nombreProceso;
+		this.descripcion=descripcion;
+		this.coste=coste;
+		this.estimado=estimado;
+		this.estado=estado;
+		this.responsable=responsable;
+		this.servicio=servicio;
+		this.incidencias=incidencias;
+		this.ordenesTrabajo=ordenesTrabajo;
+		this.fechaInicio=fechaInicio;
 	}
 	
 	//Setters
@@ -56,6 +74,14 @@ public class Proceso {
 		this.fechaInicio=fechaInicio;
 	}
 	
+	public void setIncidencias(ArrayList<Incidencia> incidencias) {
+		this.incidencias=incidencias;
+	}
+	
+	public void setOrdenesTrabajo(ArrayList<OrdenTrabajo> ordenesTrabajo) {
+		this.ordenesTrabajo=ordenesTrabajo;
+	}
+	
 	//Getters
 	public Integer getIdentificador() {
 		return this.identificador;
@@ -77,7 +103,7 @@ public class Proceso {
 		return this.estimado;
 	}
 	
-	public String gtResponsable() {
+	public String getResponsable() {
 		return this.responsable;
 	}
 	
@@ -91,5 +117,13 @@ public class Proceso {
 	
 	public Date getFechaInicio() {
 		return this.fechaInicio;
+	}
+	
+	public ArrayList<Incidencia> getIncidencias(){
+		return this.incidencias;
+	}
+	
+	public ArrayList<OrdenTrabajo> getOrdenesTrabajo(){
+		return this.ordenesTrabajo;
 	}
 }
