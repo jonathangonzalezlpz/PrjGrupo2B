@@ -347,47 +347,53 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 			Boolean fDuracion, Boolean fEstado, Boolean fProceso, OrdenTrabajo candidata, OrdenTrabajo filtro) {
 		
 		if(fDescripcion) {
-			if(!candidata.getDescripcion().equals(filtro.getDescripcion()))
+			if(candidata.getDescripcion()!=null && !candidata.getDescripcion().equals(filtro.getDescripcion()))
 				return false;
 		}
 		if(fMaterial) {
-			for (String m:filtro.getMaterial()) {
-				if(!candidata.getMaterial().contains(m))
-					return false;
-			}
+			if(candidata.getMaterial()!=null && !candidata.getMaterial().isEmpty()) {
+				for (String m:filtro.getMaterial()) {
+					if(!candidata.getMaterial().contains(m))
+						return false;
+				}
+			}else
+				return false;
+			
 		}
 		if(fPresupuesto) {
-			for(Presupuesto p: filtro.getPresupuesto()) {
-				if(!candidata.getPresupuesto().contains(p))
-					return false;
+			if(candidata.getPresupuesto()!=null && !candidata.getPresupuesto().isEmpty()) {
+				for(Presupuesto p: filtro.getPresupuesto()) {
+					if(!candidata.getPresupuesto().contains(p))
+						return false;
+				}
 			}
 		}
 		if(fCoste) {
-			if(candidata.getCoste()!=filtro.getCoste())
+			if(candidata.getCoste()!=null && candidata.getCoste()!=filtro.getCoste())
 				return false;
 		}
 		if(fResponsable) {
-			if(!candidata.getResponsable().equals(filtro.getResponsable())) 
+			if(candidata.getResponsable()!=null && !candidata.getResponsable().equals(filtro.getResponsable())) 
 				return false;
 		}
 		if(fPersonal) {
-			if(candidata.getPersonal()!=filtro.getPersonal())
+			if(candidata.getPersonal()!=null && candidata.getPersonal()!=filtro.getPersonal())
 				return false;
 		}
 		if(fFechaInicio) {
-			if(!candidata.getFechaInicio().equals(filtro.getFechaInicio()))
+			if(candidata.getFechaInicio()!=null && !candidata.getFechaInicio().equals(filtro.getFechaInicio()))
 				return false;
 		}
 		if(fDuracion) {
-			if(candidata.getDuracion()!=filtro.getDuracion())
+			if(candidata.getDuracion()!=null && candidata.getDuracion()!=filtro.getDuracion())
 				return false;
 		}
 		if(fEstado) {
-			if(!candidata.getEstado().equals(filtro.getEstado()))
+			if(candidata.getEstado()!=null && !candidata.getEstado().equals(filtro.getEstado()))
 				return false;
 		}
 		if(fProceso) {
-			if(!candidata.getPresupuesto().equals(filtro.getProceso()))
+			if(candidata.getProceso()!=null && !candidata.getPresupuesto().equals(filtro.getProceso()))
 				return false;
 		}
 		return true;

@@ -129,6 +129,33 @@ public class OrdenTrabajo {
 	public void setProceso(Proceso proceso) {
 		this.proceso = proceso;
 	}
+
+	
+	//Equals
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((identificador == null) ? 0 : identificador.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrdenTrabajo other = (OrdenTrabajo) obj;
+		if (identificador == null) {
+			if (other.identificador != null)
+				return false;
+		} else if (!identificador.equals(other.identificador))
+			return false;
+		return true;
+	}
 	
 	
 	
