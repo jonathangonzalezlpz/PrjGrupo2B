@@ -3,6 +3,7 @@ package Model;
 import java.util.Date;
 
 public class Incidencia {
+	public static final String [] tiposIncidencia = {"Iluminación","Parques","Asfalto","Alcantarillado", "Tráfico", "Suministro", "Otra"};
 	private Integer identificador;
 	private String nombreCiudadano;
 	private String DNI;
