@@ -1,5 +1,94 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Presupuesto {
 
+	private Integer identificador;
+	private String empresa;
+	private Double presupuesto;
+	private Date fechaInicio;
+	private Integer duracion;
+	private ArrayList<String> material;
+	private Integer personal;
+	
+	//Constructor
+	//vacío para construcción con setters
+	public Presupuesto() {
+		
+	}
+	
+	//Con todos los parametros
+	public Presupuesto(Integer identificador, String empresa, Double presupuesto, Date fechaInicio, Integer duracion,
+			ArrayList<String> material, Integer personal) {
+		this.identificador = identificador;
+		this.empresa = empresa;
+		this.presupuesto = presupuesto;
+		this.fechaInicio = fechaInicio;
+		this.duracion = duracion;
+		this.material = material;
+		this.personal = personal;
+	}
+
+	//Getters y Setters
+	public Integer getIdentificador() {
+		return identificador;
+	}
+
+	public void setIdentificador(Integer identificador) {
+		this.identificador = identificador;
+	}
+
+	public String getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
+	}
+
+	public Double getPresupuesto() {
+		return presupuesto;
+	}
+
+	public void setPresupuesto(Double presupuesto) {
+		this.presupuesto = presupuesto;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Integer getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(Integer duracion) {
+		this.duracion = duracion;
+	}
+
+	public ArrayList<String> getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(ArrayList<String> material) {
+		this.material = material;
+	}
+
+	public Integer getPersonal() {
+		return personal;
+	}
+
+	public void setPersonal(Integer personal) {
+		this.personal = personal;
+	}
+	
+		
+	
+	
 }
