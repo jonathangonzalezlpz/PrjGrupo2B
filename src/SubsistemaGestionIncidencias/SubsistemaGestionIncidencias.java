@@ -7,7 +7,9 @@ import Exception.CustomException;
 import Model.Incidencia;
 import Model.Proceso;
 
-public class ImplSubsistemaGestionIncidencias implements InterfaceSubsistemaGestionIncidencias {
+public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionIncidencias {
+	
+	private ArrayList<Incidencia> incidencias;
 
 	@Override
 	public Incidencia inicializar(Integer identificador, String ciudadano, String DNI, String telefono,
@@ -47,19 +49,54 @@ public class ImplSubsistemaGestionIncidencias implements InterfaceSubsistemaGest
 		if(incidencia.getTipoIncidencia() == null)
 			throw new CustomException("No se reconoce tipo de incidencia", 1);
 		
+		incidencia.setProceso(proceso);
+		//Al ser tipo Date el formato siempre va a ser correcto
+		incidencia.setFechaInicio(fechaInicio);
+		
 		return incidencia;
 			
 	}
 	
 	@Override
 	public Incidencia crear(Incidencia incidencia) throws CustomException{
-		// TODO Auto-generated method stub
-		return null;
+		if(incidencia != null) {
+			//No existe en el sistema una incidencia con el mismo identificador
+			for(Incidencia i:this.incidencias) {
+				if(i.getIdentificador() == incidencia.getIdentificador()) {
+					throw new CustomException("Incidencia ya existe", 2);
+				}
+			}
+			//Se almacena en el sistema
+			this.incidencias.add(incidencia);
+			return incidencia;
+		}else
+			return null;
+		
 	}
 
 	@Override
 	public Incidencia actualizar(Incidencia incidencia) {
-		// TODO Auto-generated method stub
+		if(incidencia != null) {
+			for(int i = 0; i< this.incidencias.size(); i++) {
+				if (this.incidencias.get(i).getIdentificador().equals(incidencia.getIdentificador())) {
+					Incidencia oldIncidencia = this.incidencias.get(i);
+					if(incidencia.getNombreCiudadano() != null)
+						oldIncidencia.setNombreCiudadano(incidencia.getNombreCiudadano());
+					if(incidencia.getDNI() != null)
+						oldIncidencia.setDNI(incidencia.getDNI());
+					if(incidencia.getDescripcion() != null)
+						oldIncidencia.setDescripcion(incidencia.getDescripcion());
+					if(incidencia.getLocalizacion() != null)
+						oldIncidencia.setLocalizacion(incidencia.getLocalizacion());
+					if(incidencia.getTipoIncidencia() != null)
+						oldIncidencia.setTipoIncidencia(incidencia.getTipoIncidencia());
+					if(incidencia.getProceso() != null)
+						oldIncidencia.setProceso(incidencia.getProceso());
+					if(incidencia.getFechaInicio() != null)
+						oldIncidencia.setFechaInicio(incidencia.getFechaInicio());
+				}
+			}
+		}
 		return null;
 	}
 
