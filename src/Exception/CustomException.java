@@ -9,10 +9,10 @@ package Exception;
  */
 public class CustomException extends Exception{
 	
-	public Integer codigo;
+	public int codigo;
 	
 	
-	public CustomException(String mensaje, Integer codigo) {
+	public CustomException(String mensaje, int codigo) {
 		super(mensaje);
 		this.codigo = codigo;
 	}
