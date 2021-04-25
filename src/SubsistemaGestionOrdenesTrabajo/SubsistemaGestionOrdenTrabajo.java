@@ -2,6 +2,7 @@ package SubsistemaGestionOrdenesTrabajo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -32,17 +33,17 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 		//fecha formato incorrecto salta al crear Objeto Date
 		//duracion negativa
 		//estado no valido
-		if(identificador < 0) {
+		if(identificador != null && identificador < 0) {
 			throw new CustomException("Identificador negativo", 1);
-		}else if(descripcion.length() > 500) {
+		}else if(descripcion != null && descripcion.length() > 500) {
 			throw new CustomException("Descripcion superior a 500 chars", 1);
-		}else if(!(_alfabetico(responsable))) {
+		}else if(responsable != null && !(_alfabetico(responsable))) {
 			throw new CustomException("Responsable no alfabetico", 1);
-		}else if(personal < 0) {
+		}else if(personal != null && personal < 0) {
 			throw new CustomException("Personal negativo", 1);
-		}else if(duracion < 0) {
+		}else if(duracion != null && duracion < 0) {
 			throw new CustomException("Duracion negativo", 1);
-		}else if(!_estadoValido(estado)) {
+		}else if(estado != null && !_estadoValido(estado)) {
 			throw new CustomException("Estado no válido", 1);
 		}
 			
@@ -224,9 +225,62 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 	}
 
 	@Override
-	public OrdenTrabajo buscar(OrdenTrabajo filtro) {
-		
-		return null;
+	public ArrayList<OrdenTrabajo> buscar(OrdenTrabajo filtro){
+		ArrayList<OrdenTrabajo> result = new ArrayList<>();
+		if(filtro==null || this._isNula(filtro)) {
+			result = new ArrayList<>(this.OTs.values());
+		}else { //filtramos
+			Boolean fId = false, fDescripcion = false, fMaterial = false, fPresupuesto = false, 
+					fCoste = false, fResponsable = false, fPersonal = false, fFechaInicio = false, 
+					fDuracion = false, fEstado = false, fProceso = false;
+			if(filtro.getIdentificador()!=null) {
+				fId = true;
+				if(!this.OTs.containsKey(filtro.getIdentificador())) {
+					return result; //vacio
+				}
+			}
+			if(filtro.getDescripcion()!=null)
+				fDescripcion = true;
+			if(filtro.getMaterial()!=null)
+				fMaterial = true;
+			if(filtro.getPresupuesto()!=null)
+				fPresupuesto = false;
+			if(filtro.getCoste()!=null)
+				fCoste = true;
+			if(filtro.getResponsable()!=null)
+				fResponsable = true;
+			if(filtro.getPersonal()!=null)
+				fPersonal = true;
+			if(filtro.getFechaInicio()!=null)
+				fFechaInicio = true;
+			if(filtro.getDuracion()!=null)
+				fDuracion = true;
+			if(filtro.getEstado()!=null)
+				fEstado = true;
+			if(filtro.getProceso()!=null)
+				fProceso = true;
+			//Aplicamos filtro
+			if(fId) { //Solo puede haber una
+				OrdenTrabajo candidata = this.OTs.get(filtro.getIdentificador());
+				if(this._cumpleFiltro(fDescripcion, fMaterial, fPresupuesto, fCoste, 
+						fResponsable, fPersonal, fFechaInicio, fDuracion, fEstado, 
+						fProceso, candidata, filtro))
+					result.add(candidata);
+				else
+					return result;
+			}else {
+				Collection<OrdenTrabajo> total = this.OTs.values();
+				for(OrdenTrabajo o:total) {
+					if(this._cumpleFiltro(fDescripcion, fMaterial, fPresupuesto, fCoste, 
+							fResponsable, fPersonal, fFechaInicio, fDuracion, fEstado, 
+							fProceso, o, filtro))
+						result.add(o);
+					else
+						return result;
+				}
+			}
+		}
+		return result;
 	}
 	
 	//Métodos privados
@@ -286,6 +340,57 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 			return true;
 		}
 		return false;
+	}
+	
+	private Boolean _cumpleFiltro(Boolean fDescripcion, Boolean fMaterial, Boolean fPresupuesto, 
+			Boolean fCoste, Boolean fResponsable, Boolean fPersonal, Boolean fFechaInicio, 
+			Boolean fDuracion, Boolean fEstado, Boolean fProceso, OrdenTrabajo candidata, OrdenTrabajo filtro) {
+		
+		if(fDescripcion) {
+			if(!candidata.getDescripcion().equals(filtro.getDescripcion()))
+				return false;
+		}
+		if(fMaterial) {
+			for (String m:filtro.getMaterial()) {
+				if(!candidata.getMaterial().contains(m))
+					return false;
+			}
+		}
+		if(fPresupuesto) {
+			for(Presupuesto p: filtro.getPresupuesto()) {
+				if(!candidata.getPresupuesto().contains(p))
+					return false;
+			}
+		}
+		if(fCoste) {
+			if(candidata.getCoste()!=filtro.getCoste())
+				return false;
+		}
+		if(fResponsable) {
+			if(!candidata.getResponsable().equals(filtro.getResponsable())) 
+				return false;
+		}
+		if(fPersonal) {
+			if(candidata.getPersonal()!=filtro.getPersonal())
+				return false;
+		}
+		if(fFechaInicio) {
+			if(!candidata.getFechaInicio().equals(filtro.getFechaInicio()))
+				return false;
+		}
+		if(fDuracion) {
+			if(candidata.getDuracion()!=filtro.getDuracion())
+				return false;
+		}
+		if(fEstado) {
+			if(!candidata.getEstado().equals(filtro.getEstado()))
+				return false;
+		}
+		if(fProceso) {
+			if(!candidata.getPresupuesto().equals(filtro.getProceso()))
+				return false;
+		}
+		return true;
 	}
 	 
 

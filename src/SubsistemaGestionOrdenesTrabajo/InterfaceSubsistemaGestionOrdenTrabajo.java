@@ -30,5 +30,5 @@ public interface InterfaceSubsistemaGestionOrdenTrabajo {
     public OrdenTrabajo asignarEmpresa(OrdenTrabajo ordenTrabajo, Presupuesto presupuesto) throws CustomException;
 
     //Devuleve el conjunto de órdenes de trabajo que coincidan con los campos de la orden de trabajo filtro, se puede especificar nulo
-    public OrdenTrabajo buscar(OrdenTrabajo filtro) throws CustomException;
+    public ArrayList<OrdenTrabajo> buscar(OrdenTrabajo filtro);
 }
