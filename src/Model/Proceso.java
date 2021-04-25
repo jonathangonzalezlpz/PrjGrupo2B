@@ -14,6 +14,7 @@ public class Proceso {
 	private String estado;
 	private String responsable;
 	private String servicio;
+	private Date fechaInicio;
 	
 	public Proceso() {
 	}
@@ -51,6 +52,10 @@ public class Proceso {
 		this.servicio=servicio;
 	}
 	
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio=fechaInicio;
+	}
+	
 	//Getters
 	public Integer getIdentificador() {
 		return this.identificador;
@@ -82,5 +87,9 @@ public class Proceso {
 	
 	public String getServicio() {
 		return this.servicio;
+	}
+	
+	public Date getFechaInicio() {
+		return this.fechaInicio;
 	}
 }
