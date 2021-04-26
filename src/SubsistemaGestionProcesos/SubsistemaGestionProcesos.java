@@ -69,10 +69,11 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 	}
 
 	@Override
-	public Proceso actualizar(Proceso proceso) {
+	public Proceso actualizar(Proceso proceso) throws CustomException{
+		Proceso anterior=new Proceso();
 		if(proceso!=null) {
 			if(this.procesos.containsKey(proceso.getIdentificador())) {
-				Proceso anterior=this.procesos.get(proceso.getIdentificador());
+				anterior=this.procesos.get(proceso.getIdentificador());
 				if(proceso.getNombre()!=null) 
 					anterior.setNombre(proceso.getNombre());
 				if(proceso.getDescripcion()!=null)
@@ -92,7 +93,8 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 				//TEN SENTIDO CAMBIAR AQUÍ INCIDENCIAS E ORDENES TRABAJO CANDO XA HAI MÉTODOS PARA ASIGNAR ¿??¿?¿?¿?¿?
 			}
 		}
-		return null;
+		
+		return anterior;
 	}
 
 	@Override
@@ -102,15 +104,39 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 	}
 
 	@Override
-	public Proceso asignarIncidencia(Proceso proceso, ArrayList<Incidencia> incidencias) {
-		// TODO Auto-generated method stub
-		return null;
+	public Proceso asignarIncidencia(Proceso proceso, ArrayList<Incidencia> incidencias) throws CustomException{
+		//El proceso tiene que ser comprobado antes
+		if(proceso==null) {
+			throw new CustomException("Proceso nulo", 1);
+		}else if(this._camposNulos(proceso)) {
+			throw new CustomException("Proceso con todos los campos nulos", 1);
+		}else if(!this.procesos.containsKey(proceso.getIdentificador())){
+			throw new CustomException("Proceso no registrado", 4);
+		}
+		//CREO QUE ME FALTAN COMPROBACIÓNS
+		
+		//SUPOÑENDO QUE AS INCIDENCIAS XA VEÑEN VALIDADADAS E QUE SON INCIDENCIAS SEN ASIGNAR
+		proceso.setIncidencias(incidencias);
+			
+		return proceso;
 	}
 
 	@Override
-	public Proceso asignarOrdenTrabajo(Proceso proceso, ArrayList<OrdenTrabajo> ordenesTrabajo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Proceso asignarOrdenTrabajo(Proceso proceso, ArrayList<OrdenTrabajo> ordenesTrabajo) throws CustomException{
+		//El proceso tiene que ser comprobado antes
+		if(proceso==null) {
+			throw new CustomException("Proceso nulo", 1);
+		}else if(this._camposNulos(proceso)) {
+			throw new CustomException("Proceso con todos los campos nulos", 1);
+		}else if(!this.procesos.containsKey(proceso.getIdentificador())){
+			throw new CustomException("Proceso no registrado", 4);
+		}
+		//CREO QUE ME FALTAN COMPROBACIÓNS
+			
+		//SUPOÑENDO QUE AS ORDES TRABALLO XA VEÑEN VALIDADADAS E QUE SON ORDES TRABALLO SEN ASIGNAR
+		proceso.setOrdenesTrabajo(ordenesTrabajo);
+				
+		return proceso;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
