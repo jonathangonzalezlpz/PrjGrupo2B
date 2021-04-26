@@ -10,6 +10,10 @@ import Model.Proceso;
 public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionIncidencias {
 
 	private ArrayList<Incidencia> incidencias;
+	
+	public SubsistemaGestionIncidencias() {
+		incidencias = new ArrayList<>();
+	}
 
 	@Override
 	public Incidencia inicializar(Integer identificador, String ciudadano, String DNI, String telefono,
@@ -81,7 +85,9 @@ public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionI
 				}
 			}
 			// Se almacena en el sistema
-			this.incidencias.add(incidencia);
+			if(!incidencia.getFechaInicio().after(new Date()))
+				this.incidencias.add(incidencia);
+			
 			return incidencia;
 		} else
 			return null;
@@ -116,10 +122,42 @@ public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionI
 
 	@Override
 	public ArrayList<Incidencia> buscar(Incidencia filtro) {
+		ArrayList<Incidencia> resultado = new ArrayList<>();
 		if(filtro == null) {
 			return this.incidencias;
 		}
-		return null;
+		
+		for(Incidencia incidencia:this.incidencias) {
+			if(coinciden(filtro,incidencia))
+				resultado.add(incidencia);
+		}
+		
+		return resultado;
+	}
+	
+	private boolean coinciden(Incidencia incidencia1, Incidencia incidencia2) {
+		boolean coinciden = true;
+		if (incidencia1.getIdentificador() != null) {
+			return incidencia1.getIdentificador().equals(incidencia2.getIdentificador());
+		}
+		if (incidencia1.getNombreCiudadano() != null)
+			coinciden = coinciden && incidencia1.getNombreCiudadano().equals(incidencia2.getNombreCiudadano());
+		if (incidencia1.getDNI() != null)
+			coinciden = coinciden && incidencia1.getDNI().equals(incidencia2.getDNI());
+		if (incidencia1.getDescripcion() != null)
+			coinciden = coinciden && incidencia1.getDescripcion().equals(incidencia2.getDescripcion());
+		if (incidencia1.getLocalizacion() != null)
+			coinciden = coinciden && incidencia1.getLocalizacion().equals(incidencia2.getLocalizacion());
+		if (incidencia1.getTipoIncidencia() != null)
+			coinciden = coinciden && incidencia1.getTipoIncidencia().equals(incidencia2.getTipoIncidencia());
+		
+		coinciden = coinciden && (incidencia1.getProceso() == null && incidencia2.getProceso() == null);
+		
+		if (incidencia1.getFechaInicio() != null)
+			coinciden = coinciden && incidencia1.getFechaInicio().equals(incidencia2.getFechaInicio());
+		
+		return coinciden;
+			
 	}
 
 
