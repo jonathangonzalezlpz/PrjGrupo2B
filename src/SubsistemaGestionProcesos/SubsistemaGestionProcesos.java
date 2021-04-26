@@ -31,17 +31,17 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			throw new CustomException("Nombre superior a 100 characters",1);
 		}else if(descripcion!=null && descripcion.length()>500) {
 			throw new CustomException("Descipcion superior a 500 characters",1);
+		}else if(coste!=null && coste<0) {
+			throw new CustomException("Coste negativo",1);
 		}else if(responsable!=null && responsable.length()>100) {
 			throw new CustomException("Responsable superior a 100 characters",1);
 		}else if(estado!=null && !_estadoValido(estado)) {
-			//Estado no existente
-			//Por defecto será "Pendiente"
-			estado="Pendiente";
+			throw new CustomException("Estado no existente",1);
 		}else if(servicio!=null && !_servicioValido(servicio)) {
-			//Servicio no existente
-			//Por defecto será "Otro"
-			servicio="Otro";
+			throw new CustomException("Servicio no existente",1);
 		}
+		
+		//QUE COMPROBO DE FECHA INICIO¿?¿?¿?
 		
 		return new Proceso(identificador,nombreProceso,descripcion,coste,estimado,estado,responsable,servicio,incidencias,ordenesTrabajo,fechaInicio);
 	}
@@ -88,9 +88,12 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 					anterior.setResponsable(proceso.getResponsable());
 				if(proceso.getServicio()!=null)
 					anterior.setServicio(proceso.getServicio());
-				
-				//TEN SENTIDO CAMBIAR A FECHA INICIO¿?¿?¿?¿?¿?¿?
-				//TEN SENTIDO CAMBIAR AQUÍ INCIDENCIAS E ORDENES TRABAJO CANDO XA HAI MÉTODOS PARA ASIGNAR ¿??¿?¿?¿?¿?
+				if(proceso.getIncidencias()!=null)
+					this.asignarIncidencia(proceso, proceso.getIncidencias());
+				if(proceso.getOrdenesTrabajo()!=null)
+					this.asignarOrdenTrabajo(proceso, proceso.getOrdenesTrabajo());
+				if(proceso.getFechaInicio()!=null)
+					anterior.setFechaInicio(proceso.getFechaInicio());
 			}
 		}
 		
@@ -115,7 +118,22 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		}
 		//CREO QUE ME FALTAN COMPROBACIÓNS
 		
-		//SUPOÑENDO QUE AS INCIDENCIAS XA VEÑEN VALIDADADAS E QUE SON INCIDENCIAS SEN ASIGNAR
+		//COMPROBAR INCIDENCIAS
+		for(Incidencia i:incidencias) {
+			if(i==null) {
+				throw new CustomException("Hay incidencia(s) nula(s)",1);
+			}else if(_camposNulosIncidencia(i)) {
+				throw new CustomException("Hay incidencia(s) con campo(s) nulo(s)",1);
+			}
+			
+			for(Incidencia j:incidencias) {
+				if(i==j) {
+					throw new CustomException("Hay incidencias repetidas",1);
+				}
+			}
+		}
+		
+		//Todo correcto
 		proceso.setIncidencias(incidencias);
 			
 		return proceso;
@@ -132,8 +150,23 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			throw new CustomException("Proceso no registrado", 4);
 		}
 		//CREO QUE ME FALTAN COMPROBACIÓNS
+		
+		//COMPROBAR ORDENES TRABAJO
+		for(OrdenTrabajo i:ordenesTrabajo) {
+			if(i==null) {
+				throw new CustomException("Hay orden(es) de trabajo nula(s)",1);
+			}else if(_camposNulosOrdenTrabajo(i)) {
+				throw new CustomException("Hay orden(es) de trabajo con campo(s) nulo(s)",1);
+			}
 			
-		//SUPOÑENDO QUE AS ORDES TRABALLO XA VEÑEN VALIDADADAS E QUE SON ORDES TRABALLO SEN ASIGNAR
+			for(OrdenTrabajo j:ordenesTrabajo) {
+				if(i==j) {
+					throw new CustomException("Hay ordenes de trabajo repetidas",1);
+				}
+			}
+		}
+		
+		//Todo correcto
 		proceso.setOrdenesTrabajo(ordenesTrabajo);
 				
 		return proceso;
@@ -170,6 +203,22 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		for(String tipo:tipoServicio)
 			if(tipo.equals(servicio))
 				return true;
+		return false;
+	}
+	
+	private Boolean _camposNulosIncidencia(Incidencia incidencia) {
+		if(incidencia.getIdentificador()==null && incidencia.getNombreCiudadano()==null && incidencia.getDescripcion()==null &&
+				incidencia.getDNI()==null && incidencia.getLocalizacion()==null && incidencia.getTelefono()==null &&
+				incidencia.getTipoIncidencia()==null && incidencia.getProceso()==null)
+			return true;
+		return false;
+	}
+	
+	private Boolean _camposNulosOrdenTrabajo(OrdenTrabajo ordenTrabajo) {
+		if(ordenTrabajo.getIdentificador()==null && ordenTrabajo.getDescripcion()==null && ordenTrabajo.getMaterial()==null && ordenTrabajo.getPresupuesto()==null && 
+				ordenTrabajo.getCoste()==null && ordenTrabajo.getResponsable()==null && ordenTrabajo.getPersonal()==null && ordenTrabajo.getFechaInicio()==null &&
+				ordenTrabajo.getDuracion()==null && ordenTrabajo.getEstado()==null && ordenTrabajo.getProceso()==null)
+			return true;
 		return false;
 	}
 
