@@ -7,7 +7,7 @@ import Model.Proceso;
 
 public interface InterfaceSubsistemaAnalisisEstadisticas {
     
-    /*Permite el filtrado por rango de fechas, por campos de incidencia y distribuir los datos en días (por defecto) o meses
+    /*Permite el filtrado por rango de fechas, por campos de incidencia y distribuir los datos en dias (por defecto) o meses
     Devuelve un objeto estadisticas que contiene numero, coste y distribucion de los datos obtenidos*/
     public Estadistica obtenerEstadisticasIncidencias(String rango, Incidencia filtro, String distribucion);
     
@@ -15,8 +15,8 @@ public interface InterfaceSubsistemaAnalisisEstadisticas {
     Devuelve un objeto estadisticas que contiene numero, coste y distribucion de los datos obtenidos*/
     public Estadistica obtenerEstadisticasProcesos(String rango, Proceso filtro, String distribucion);
     
-    /*Permite el filtrado por rango de fechas, por campos de orden de trabajo y distribuir los datos en días (por defecto) o meses
-    Devuelve un objeto estadísticas que contiene numero, coste y distribución de los datos obtenidos*/
+    /*Permite el filtrado por rango de fechas, por campos de orden de trabajo y distribuir los datos en dias (por defecto) o meses
+    Devuelve un objeto estadisticas que contiene numero, coste y distribución de los datos obtenidos*/
     public Estadistica obtenerEstadisticasOrdenesTrabajo(String rango, OrdenTrabajo filtro, String distribucion);
         
 }
