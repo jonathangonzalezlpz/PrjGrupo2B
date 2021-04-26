@@ -1,6 +1,7 @@
 package SubsistemaGestionProcesos;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -39,10 +40,10 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			throw new CustomException("Estado no existente",1);
 		}else if(servicio!=null && !_servicioValido(servicio)) {
 			throw new CustomException("Servicio no existente",1);
+		}if(fechaInicio!=null && _fechaValida(fechaInicio)) {
+			throw new CustomException("Fecha posterior a hoy",1);
 		}
-		
-		//QUE COMPROBO DE FECHA INICIO¿?¿?¿?
-		
+				
 		return new Proceso(identificador,nombreProceso,descripcion,coste,estimado,estado,responsable,servicio,incidencias,ordenesTrabajo,fechaInicio);
 	}
 
@@ -102,8 +103,19 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 
 	@Override
 	public ArrayList<Proceso> buscar(Proceso filtro) {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<Proceso> procesos=this.procesos.values();
+		ArrayList<Proceso> resultado=new ArrayList<>();
+		
+		if(filtro==null)
+			return new ArrayList<>(procesos);
+		else
+			for(Integer key:this.procesos.keySet()) {
+				if(_coinciden(filtro,this.procesos.get(key))) {
+					resultado.add(this.procesos.get(key));
+				}
+			}
+		
+		return resultado;
 	}
 
 	@Override
@@ -220,6 +232,40 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 				ordenTrabajo.getDuracion()==null && ordenTrabajo.getEstado()==null && ordenTrabajo.getProceso()==null)
 			return true;
 		return false;
+	}
+	
+	private Boolean _coinciden(Proceso filtro,Proceso p) {
+		Boolean coincidencia=false;
+		if(filtro.getIdentificador()!=null)
+			return filtro.getIdentificador().equals(p.getIdentificador());
+		
+		if(filtro.getNombre()!=null)
+			coincidencia=coincidencia && filtro.getNombre().equals(p.getNombre());
+		if(filtro.getDescripcion()!=null)
+			coincidencia=coincidencia && filtro.getDescripcion().equals(p.getDescripcion());
+		if(filtro.getCoste()!=null)
+			coincidencia=coincidencia && filtro.getCoste().equals(p.getCoste());
+		if(filtro.getEstimado()!=null)
+			coincidencia=coincidencia && filtro.getEstimado().equals(p.getEstimado());
+		if(filtro.getEstado()!=null)
+			coincidencia=coincidencia && filtro.getEstado().equals(p.getEstado());
+		if(filtro.getServicio()!=null)
+			coincidencia=coincidencia && filtro.getServicio().equals(p.getServicio());
+		if(filtro.getFechaInicio()!=null)
+			coincidencia=coincidencia && filtro.getFechaInicio().equals(p.getFechaInicio());
+		if(filtro.getResponsable()!=null)
+			coincidencia=coincidencia && filtro.getResponsable().equals(p.getResponsable());
+		
+		//COINCIDIR TAMÉN AS INCIDENCIAS E AS ORDES TRABALLO ?¿?¿?¿?
+		
+		return coincidencia;
+	}
+	
+	private Boolean _fechaValida(Date fecha) {
+		Date date = new Date(System.currentTimeMillis());
+		if(fecha.before(date))
+			return false;
+		return true;
 	}
 
 }
