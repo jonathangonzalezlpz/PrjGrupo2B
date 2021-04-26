@@ -16,7 +16,10 @@ public interface InterfaceSubsistemaGestionIncidencias {
 	// Crea una nueva incidencia y la almacena en el sistema
 	public Incidencia crear(Incidencia incidencia) throws CustomException;
 
-	// Modifica una incidencia existente en el sistema
+	/* Modifica una incidencia existente en el sistema, se modifican solo los campos indicados, es decir,
+	 * si no se especifican se mantienen. 
+	 * se puede modificar todo menos el identificador-
+	 */
 	public Incidencia actualizar(Incidencia incidencia);
 
 	// Devuleve el conjunto de incidencias que coincidan con los campos de
