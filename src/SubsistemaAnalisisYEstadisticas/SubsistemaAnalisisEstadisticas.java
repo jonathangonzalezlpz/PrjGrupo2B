@@ -111,7 +111,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 						if (i.getProceso() != null) {
 							coste += i.getProceso().getCoste();
 						}
-
+						incidenciasFiltradas.remove(i);
 					}
 				}
 				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear(),
@@ -129,7 +129,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 						if (i.getProceso() != null) {
 							coste += i.getProceso().getCoste();
 						}
-
+						incidenciasFiltradas.remove(i);
 					}
 				}
 				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear(),
@@ -231,7 +231,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 					if (i.getFechaInicio().compareTo(fechaActual) == 0) {
 						nProcesos++;
 						coste += i.getCoste();
-						//Aqui no puedo eliminar los q si pasan el filtro para que no se repitan despues?
+						procesosFiltrados.remove(i);
 					}
 				}
 				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear(),
@@ -247,6 +247,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 					if (i.getFechaInicio().getTime()>= fechaActual.getTime() && i.getFechaInicio().getTime()< fechaActual.getTime()+604800000) {
 						nProcesos++;
 						coste += i.getCoste();
+						procesosFiltrados.remove(i);
 					}
 				}
 				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear(),
@@ -348,7 +349,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 					if (i.getFechaInicio().compareTo(fechaActual) == 0) {
 						nOrdenTrabajos++;
 						coste += i.getCoste();
-						//Aqui no puedo eliminar los q si pasan el filtro para que no se repitan despues?
+						ordenesTrabajoFiltradas.remove(i);
 					}
 				}
 				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear(),
@@ -364,6 +365,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 					if (i.getFechaInicio().getTime()>= fechaActual.getTime() && i.getFechaInicio().getTime()< fechaActual.getTime()+604800000) {
 						nOrdenTrabajos++;
 						coste += i.getCoste();
+						ordenesTrabajoFiltradas.remove(i);
 					}
 				}
 				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear(),
