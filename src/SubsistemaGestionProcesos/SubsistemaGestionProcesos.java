@@ -90,9 +90,9 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 				if(proceso.getServicio()!=null)
 					anterior.setServicio(proceso.getServicio());
 				if(proceso.getIncidencias()!=null)
-					this.asignarIncidencia(proceso, proceso.getIncidencias());
+					this.asignarIncidencia(proceso, proceso.getIncidencias()); //Llamada a método asignar
 				if(proceso.getOrdenesTrabajo()!=null)
-					this.asignarOrdenTrabajo(proceso, proceso.getOrdenesTrabajo());
+					this.asignarOrdenTrabajo(proceso, proceso.getOrdenesTrabajo()); //Llamada a método asignar
 				if(proceso.getFechaInicio()!=null)
 					anterior.setFechaInicio(proceso.getFechaInicio());
 			}
