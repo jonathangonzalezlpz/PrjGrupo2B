@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Exception.CustomException;
+import Model.Incidencia;
 import Model.OrdenTrabajo;
 import Model.Presupuesto;
+import Model.Proceso;
 import SubsistemaAnalisisYEstadisticas.InterfaceSubsistemaAnalisisEstadisticas;
 import SubsistemaAnalisisYEstadisticas.SubsistemaAnalisisEstadisticas;
 import SubsistemaGestionIncidencias.InterfaceSubsistemaGestionIncidencias;
@@ -26,6 +28,19 @@ public class Main {
 		InterfaceSubsistemaGestionProcesos gp = new SubsistemaGestionProcesos();
 		InterfaceSubsistemaAnalisisEstadisticas gu = new SubsistemaAnalisisEstadisticas(gi, got, gp);
 		try {
+			
+			//PROCESOS
+            //Inicializar
+            Proceso inicializada=gp.inicializar(1,"Proceso1","Primer proceso del sistema",null,null,null,null,null,null,null,null);
+            //Crear
+            Proceso creado=gp.crear(new Proceso(1,"Proceso1","Primer proceso del sistema",null,100.0,"Pendiente","Noelia","Iluminacion",null,null, new Date(2019,3,12)));
+            //Buscar
+            ArrayList<Proceso> buscados=gp.buscar(inicializada);
+            System.out.printf(buscados.get(0).getNombre());
+            //Asignar incidencias
+            ArrayList<Incidencia> incidencias=gi.obtenerIncidenciaSinAsignar();
+            gp.asignarIncidencia(creado,incidencias);
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//OTS
 			ArrayList<String> material = new ArrayList<String>();
 			material.add("Bombillas");
@@ -52,7 +67,12 @@ public class Main {
 			//buscar
 			OrdenTrabajo filtro = got.inicializar(null,null,null,null,null,null,null, null, null, "Pendiente de asignaci√≥n", null);
 			System.out.println(got.buscar(filtro));
-			//
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//Asignar ordenes de trabajo a proceso
+			ArrayList<OrdenTrabajo> ordenes=got.buscar(filtro);
+            gp.asignarOrdenTrabajo(creado,ordenes);
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//ESTADÕSTICAS
 			gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "pep");
 		} catch (CustomException e) {
 			// TODO Auto-generated catch block

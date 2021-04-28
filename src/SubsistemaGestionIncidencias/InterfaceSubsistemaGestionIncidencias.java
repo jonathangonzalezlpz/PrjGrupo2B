@@ -11,7 +11,7 @@ public interface InterfaceSubsistemaGestionIncidencias {
 
 	// Devuelve un objeto incidencia con los campos inicializados que se indiquen
 	public Incidencia inicializar(Integer identificador, String ciudadano, String DNI, String telefono,
-			String descripcion, String localización, String tipoIncidencia, Proceso proceso, Date fechaInicio) throws CustomException;
+			String descripcion, String localizacion, String tipoIncidencia, Proceso proceso, Date fechaInicio) throws CustomException;
 
 	// Crea una nueva incidencia y la almacena en el sistema
 	public Incidencia crear(Incidencia incidencia) throws CustomException;
