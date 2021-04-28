@@ -108,13 +108,13 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 				throw new CustomException("Faltan campos Obligatorios {id, descripcion ,estado}",1);
 			}else if(ordenTrabajo.getPresupuesto()!=null && !ordenTrabajo.getPresupuesto().isEmpty()) { 
 				throw new CustomException("No se pueden incorporar presupuestos en la creación",1);
-			}else if(ordenTrabajo.getEstado()!=null && ordenTrabajo.getEstado().equals("Pendiente Asignación")) {
-				throw new CustomException("El estado no puede ser distinto de Pendiente asignación", 1);
+			}else if(ordenTrabajo.getEstado()!=null && !ordenTrabajo.getEstado().equals("Pendiente de asignación")) {
+				throw new CustomException("El estado no puede ser distinto de Pendiente deasignación", 1);
 			}else if(this.OTs.containsKey(ordenTrabajo.getIdentificador())) //Conflicto
 				throw new CustomException("Id ya registrado", 2);
 		}
 		if(ordenTrabajo.getEstado()==null) {
-			ordenTrabajo.setEstado("Pendiente asignación");
+			ordenTrabajo.setEstado("Pendiente de asignación");
 		}
 		
 		//Inicializamos arrays
@@ -291,8 +291,6 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 							fResponsable, fPersonal, fFechaInicio, fDuracion, fEstado, 
 							fProceso, o, filtro))
 						result.add(o);
-					else
-						return result;
 				}
 			}
 		}
@@ -406,13 +404,15 @@ public class SubsistemaGestionOrdenTrabajo implements InterfaceSubsistemaGestion
 				return false;
 		}
 		if(fEstado) {
-			if(candidata.getEstado()!=null && !candidata.getEstado().equals(filtro.getEstado()))
+			if(candidata.getEstado()!=null && !candidata.getEstado().equals(filtro.getEstado())) {
 				return false;
+			}
 		}
 		if(fProceso) {
 			if(candidata.getProceso()!=null && !candidata.getPresupuesto().equals(filtro.getProceso()))
 				return false;
 		}
+		
 		return true;
 	}
 	 

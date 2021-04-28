@@ -38,6 +38,8 @@ public class Main {
 					,material , presupuesto, null, "Pepe", null, new Date(2019,3,12), 20, "Pendiente de asignación", null);
 			//Creación Orden
 			OrdenTrabajo o1 = got.crear(got.inicializar(12345,"Necesario arreglar un par de farolas situadas en la calle Alfonso XIII",null,null,null,null,null, null, null, "Pendiente de asignación", null));
+			OrdenTrabajo o2 = got.crear(got.inicializar(12346,"Necesario arreglar un par de farolas situadas en la calle Horreo",null,null,null,null,null, null, null, "Pendiente de asignación", null));
+			OrdenTrabajo o3 = got.crear(got.inicializar(12347,"Necesario arreglar un par de farolas situadas en la calle Rosa",null,null,null,null,null, null, null, "Pendiente de asignación", null));
 			//Asignamos presupuestos
 			Presupuesto c1 = got.inicializar(1, "Pepe Electricas", 350.0, new Date(2021,11,1), 2, material, 2, 12345);
 			Presupuesto c2 = got.inicializar(2, "Paco Electricas", 350.0, new Date(2021,11,1), 2, material, 2, 12345);
@@ -47,7 +49,9 @@ public class Main {
 			//gestionar
 			OrdenTrabajo modificada = got.inicializar(12345,"Necesario arreglar un par de farolas situadas en la calle Alfonso XIII",null,null,null,null,null, null, null, "En curso", null);
 			got.gestionarRecursos(modificada);
-			System.out.println(o1);
+			//buscar
+			OrdenTrabajo filtro = got.inicializar(null,null,null,null,null,null,null, null, null, "Pendiente de asignación", null);
+			System.out.println(got.buscar(filtro));
 			//
 			gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "pep");
 		} catch (CustomException e) {

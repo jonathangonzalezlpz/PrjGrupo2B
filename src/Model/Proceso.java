@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Proceso {
-	public static final String [] tipoEstado = {"Pendiente","En ejecución","Finalizado"};
-	public static final String [] tipoServicio = {"Iluminación","Parques","Asfalto","Alcantarillado", "Tráfico", "Suministro", "Otra"};
+	public static final String [] tipoEstado = {"Pendiente","En ejecuciï¿½n","Finalizado"};
+	public static final String [] tipoServicio = {"Iluminaciï¿½n","Parques","Asfalto","Alcantarillado", "Trï¿½fico", "Suministro", "Otra"};
 	private Integer identificador;
 	private String nombre;
 	private String descripcion;
@@ -126,4 +126,31 @@ public class Proceso {
 	public ArrayList<OrdenTrabajo> getOrdenesTrabajo(){
 		return this.ordenesTrabajo;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((identificador == null) ? 0 : identificador.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Proceso other = (Proceso) obj;
+		if (identificador == null) {
+			if (other.identificador != null)
+				return false;
+		} else if (!identificador.equals(other.identificador))
+			return false;
+		return true;
+	}
+	
+	
 }
