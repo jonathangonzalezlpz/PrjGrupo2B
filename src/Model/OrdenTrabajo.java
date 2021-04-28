@@ -156,6 +156,37 @@ public class OrdenTrabajo {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		String cadena = "OrdenTrabajo {\n"
+				+ "\tidentificador=" + identificador + ",\n"
+				+ "\tdescripcion=" + descripcion + ",\n";
+		if(material!=null) 
+			cadena += "\tmaterial="+ material.toString()+ ",\n";
+		else
+			cadena += "\tmaterial=null,\n";
+		if(presupuesto!=null) {
+			cadena += "\tpresupuesto={\n";
+			for(Presupuesto p: presupuesto) {
+				cadena+= "\t"+p.toString() + ",\n";
+			}
+			cadena+="\t},\n";
+		}else
+			cadena += "\tpresupuesto=null,\n";
+		cadena += "\tcoste=" + coste + ",\n"
+				+ "\tresponsable=" + responsable+",\n"
+				+ "\tpersonal=" + personal + ",\n"
+				+ "\tfechaInicio=" + fechaInicio + ",\n"
+				+ "\tduracion=" + duracion +",\n"
+				+ "\testado="+ estado + ",\n";
+		if(proceso!=null)
+			cadena += "\tproceso=" + proceso.toString();
+		else
+			cadena += "\tproceso=" + proceso;
+		cadena += "\n}";
+		return cadena;
+	}
 	
 	
 	

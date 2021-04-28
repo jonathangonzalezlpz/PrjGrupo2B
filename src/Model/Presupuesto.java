@@ -112,8 +112,25 @@ public class Presupuesto {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		String cadena = "\tPresupuesto{\n"
+				+ "\t\tidentificador=" + identificador + ",\n"
+				+ "\t\tempresa=" + empresa + ",\n"
+				+ "\t\tpresupuesto=" + presupuesto+",\n"
+				+ "\t\tfechaInicio=" + fechaInicio + ",\n"
+				+ "\t\tduracion=" + duracion + ",\n";
+		if(material != null)
+			cadena +="\t\tmaterial=" + material.toString() + ",\n";
+		else
+			cadena +="\t\tmaterial=" + material + ",\n";
+		cadena+= "\t\tpersonal="+ personal 
+				+ "\n\t\t}";
+		return cadena;
+	}
 	
-	//Equals
+	
 	
 		
 	
