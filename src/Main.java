@@ -28,7 +28,26 @@ public class Main {
 		InterfaceSubsistemaGestionProcesos gp = new SubsistemaGestionProcesos();
 		InterfaceSubsistemaAnalisisEstadisticas gu = new SubsistemaAnalisisEstadisticas(gi, got, gp);
 		try {
-			
+			//INCIDENCIAS
+			//Inicializar
+			Incidencia incidencia1 = gi.inicializar(1 , "Ra煤l", "12345678Z", "666341233", "El banco del parque est谩 roto", "Parque", 
+					"Parques", null, new Date(2020-1900,5,1));
+			Incidencia incidencia2 = gi.inicializar(2 , "Alberto", "87654321X", "661123321", "La farola no enciende", "Calle 44", 
+					"Iluminaci贸n", null, new java.util.Date(2020-1900,9,1));
+			Incidencia incidencia3 = gi.inicializar(3 , "Ram贸n", "22233322G", "661443321", "La farola no enciende", "Calle 44", 
+					"Iluminaci贸n", null, new java.util.Date(2020-1900,11,1));
+			//Crear
+			gi.crear(incidencia1);
+			gi.crear(incidencia2);
+			gi.crear(incidencia3);
+			//Actualizar
+			gi.actualizar(gi.inicializar(3, "Jose Ram贸n", null, null, null, null, null, null, null));
+			//Buscar
+			for(Incidencia i: gi.buscar(gi.inicializar(null, "Jose Ram贸n", null, null, null, null, null, null, null)))
+				System.out.println("Incidencia-> identificador:" + i.getIdentificador() + " ciudadano: "+i.getNombreCiudadano());
+			//obtenerIncidenciasSinAsignar
+			for(Incidencia i: gi.obtenerIncidenciaSinAsignar())
+				System.out.println("Incidencia-> identificador:" + i.getIdentificador() + " ciudadano: "+i.getNombreCiudadano());
 			//PROCESOS
             //Inicializar
             Proceso inicializada=gp.inicializar(1,"Proceso1","Primer proceso del sistema",null,null,null,null,null,null,null,null);
@@ -72,7 +91,7 @@ public class Main {
 			ArrayList<OrdenTrabajo> ordenes=got.buscar(filtro);
             gp.asignarOrdenTrabajo(creado,ordenes);
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//ESTAD蚐TICAS
+			//ESTAD锟絊TICAS
 			gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "pep");
 		} catch (CustomException e) {
 			// TODO Auto-generated catch block
