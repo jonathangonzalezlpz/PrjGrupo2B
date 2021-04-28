@@ -131,15 +131,15 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		//CREO QUE ME FALTAN COMPROBACIÓNS
 		
 		//COMPROBAR INCIDENCIAS
-		for(Incidencia i:incidencias) {
-			if(i==null) {
+		for(int i=0;i<incidencias.size();i++) {
+			if(incidencias.get(i)==null) {
 				throw new CustomException("Hay incidencia(s) nula(s)",1);
-			}else if(_camposNulosIncidencia(i)) {
+			}else if(_camposNulosIncidencia(incidencias.get(i))) {
 				throw new CustomException("Hay incidencia(s) con campo(s) nulo(s)",1);
 			}
 			
-			for(Incidencia j:incidencias) {
-				if(i==j) {
+			for(int j=0;j<incidencias.size();j++) {
+				if(incidencias.get(i)==incidencias.get(j) && i!=j) {
 					throw new CustomException("Hay incidencias repetidas",1);
 				}
 			}
@@ -164,15 +164,15 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		//CREO QUE ME FALTAN COMPROBACIÓNS
 		
 		//COMPROBAR ORDENES TRABAJO
-		for(OrdenTrabajo i:ordenesTrabajo) {
-			if(i==null) {
+		for(int i=0;i<ordenesTrabajo.size();i++) {
+			if(ordenesTrabajo.get(i)==null) {
 				throw new CustomException("Hay orden(es) de trabajo nula(s)",1);
-			}else if(_camposNulosOrdenTrabajo(i)) {
+			}else if(_camposNulosOrdenTrabajo(ordenesTrabajo.get(i))) {
 				throw new CustomException("Hay orden(es) de trabajo con campo(s) nulo(s)",1);
 			}
 			
-			for(OrdenTrabajo j:ordenesTrabajo) {
-				if(i==j) {
+			for(int j=0;j<ordenesTrabajo.size();j++) {
+				if(ordenesTrabajo.get(i)==ordenesTrabajo.get(j) && i!=j) {
 					throw new CustomException("Hay ordenes de trabajo repetidas",1);
 				}
 			}
