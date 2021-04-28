@@ -48,6 +48,7 @@ public class Main {
 			//obtenerIncidenciasSinAsignar
 			for(Incidencia i: gi.obtenerIncidenciaSinAsignar())
 				System.out.println("Incidencia-> identificador:" + i.getIdentificador() + " ciudadano: "+i.getNombreCiudadano());
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//PROCESOS
             //Inicializar
             Proceso inicializada=gp.inicializar(1,"Proceso1","Primer proceso del sistema",null,null,null,null,null,null,null,null);
@@ -87,14 +88,13 @@ public class Main {
 			OrdenTrabajo filtro = got.inicializar(null,null,null,null,null,null,null, null, null, "Pendiente de asignación", null);
 			System.out.println(got.buscar(filtro));
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//Asignar ordenes de trabajo a proceso
+			//Asignar ordenes de trabajo a proceso-PROCESOS
 			ArrayList<OrdenTrabajo> ordenes=got.buscar(filtro);
             gp.asignarOrdenTrabajo(creado,ordenes);
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//ESTAD�STICAS
 			gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "pep");
 		} catch (CustomException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

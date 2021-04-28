@@ -128,7 +128,6 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		}else if(!this.procesos.containsKey(proceso.getIdentificador())){
 			throw new CustomException("Proceso no registrado", 4);
 		}
-		//CREO QUE ME FALTAN COMPROBACIÓNS
 		
 		//COMPROBAR INCIDENCIAS
 		for(int i=0;i<incidencias.size();i++) {
@@ -139,7 +138,7 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			}
 			
 			for(int j=0;j<incidencias.size();j++) {
-				if(incidencias.get(i)==incidencias.get(j) && i!=j) {
+				if(incidencias.get(i).equals(incidencias.get(j)) && i!=j) {
 					throw new CustomException("Hay incidencias repetidas",1);
 				}
 			}
@@ -161,7 +160,6 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 		}else if(!this.procesos.containsKey(proceso.getIdentificador())){
 			throw new CustomException("Proceso no registrado", 4);
 		}
-		//CREO QUE ME FALTAN COMPROBACIÓNS
 		
 		//COMPROBAR ORDENES TRABAJO
 		for(int i=0;i<ordenesTrabajo.size();i++) {
@@ -172,7 +170,7 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			}
 			
 			for(int j=0;j<ordenesTrabajo.size();j++) {
-				if(ordenesTrabajo.get(i)==ordenesTrabajo.get(j) && i!=j) {
+				if(ordenesTrabajo.get(i).equals(ordenesTrabajo.get(j)) && i!=j) {
 					throw new CustomException("Hay ordenes de trabajo repetidas",1);
 				}
 			}
@@ -255,6 +253,9 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			coincidencia=coincidencia && filtro.getFechaInicio().equals(p.getFechaInicio());
 		if(filtro.getResponsable()!=null)
 			coincidencia=coincidencia && filtro.getResponsable().equals(p.getResponsable());
+		if(filtro.getIncidencias()!=null)
+			if(filtro.getIncidencias().size()==p.getIncidencias().size())
+				
 		
 		//COINCIDIR TAMÉN AS INCIDENCIAS E AS ORDES TRABALLO ?¿?¿?¿?
 		
