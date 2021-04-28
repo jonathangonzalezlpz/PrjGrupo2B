@@ -43,7 +43,7 @@ public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionI
 			if (telefono.matches("^[0-9\\-\\+]{9,15}$"))
 				incidencia.setTelefono(telefono);
 			else
-				throw new CustomException("Teléfono incorrecto", 1);
+				throw new CustomException("TelÃ©fono incorrecto", 1);
 		}
 		if (descripcion != null) {
 			if (descripcion.length() <= 240)
@@ -63,7 +63,7 @@ public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionI
 					incidencia.setTipoIncidencia(tipoIncidencia);
 			}
 			if (incidencia.getTipoIncidencia() == null)
-				throw new CustomException("No se reconoce tipo de incidencia", 1);
+				throw new CustomException("No se reconoce tipo de incidencia: "+tipoIncidencia, 1);
 		}
 		if (proceso != null)
 			incidencia.setProceso(proceso);
@@ -85,89 +85,97 @@ public class SubsistemaGestionIncidencias implements InterfaceSubsistemaGestionI
 				}
 			}
 			// Se almacena en el sistema
-			if(!incidencia.getFechaInicio().after(new Date()))
+			if(!incidencia.getFechaInicio().after(new Date())) {
 				this.incidencias.add(incidencia);
-			
-			return incidencia;
+				return incidencia;
+			}else
+				throw new CustomException("La fecha" + incidencia.getFechaInicio()+" es posterior a la fecha actual: "+ new Date(),1);
 		} else
 			return null;
 
 	}
 
 	@Override
-	public Incidencia actualizar(Incidencia incidencia) {
+	public Incidencia actualizar(Incidencia incidencia) throws CustomException{
 		if (incidencia != null) {
 			for (int i = 0; i < this.incidencias.size(); i++) {
 				if (this.incidencias.get(i).getIdentificador().equals(incidencia.getIdentificador())) {
-					Incidencia oldIncidencia = this.incidencias.get(i);
+					Incidencia incidenciaAlmacenada = this.incidencias.get(i);
 					if (incidencia.getNombreCiudadano() != null)
-						oldIncidencia.setNombreCiudadano(incidencia.getNombreCiudadano());
+						incidenciaAlmacenada.setNombreCiudadano(incidencia.getNombreCiudadano());
 					if (incidencia.getDNI() != null)
-						oldIncidencia.setDNI(incidencia.getDNI());
+						incidenciaAlmacenada.setDNI(incidencia.getDNI());
+					if (incidencia.getTelefono() != null)
+						incidenciaAlmacenada.setTelefono(incidencia.getTelefono());
 					if (incidencia.getDescripcion() != null)
-						oldIncidencia.setDescripcion(incidencia.getDescripcion());
+						incidenciaAlmacenada.setDescripcion(incidencia.getDescripcion());
 					if (incidencia.getLocalizacion() != null)
-						oldIncidencia.setLocalizacion(incidencia.getLocalizacion());
+						incidenciaAlmacenada.setLocalizacion(incidencia.getLocalizacion());
 					if (incidencia.getTipoIncidencia() != null)
-						oldIncidencia.setTipoIncidencia(incidencia.getTipoIncidencia());
+						incidenciaAlmacenada.setTipoIncidencia(incidencia.getTipoIncidencia());
 					if (incidencia.getProceso() != null)
-						oldIncidencia.setProceso(incidencia.getProceso());
+						incidenciaAlmacenada.setProceso(incidencia.getProceso());
 					if (incidencia.getFechaInicio() != null)
-						oldIncidencia.setFechaInicio(incidencia.getFechaInicio());
+						incidenciaAlmacenada.setFechaInicio(incidencia.getFechaInicio());
+					return incidenciaAlmacenada;
 				}
 			}
+			throw new CustomException("Incidencia no encontrada con identificador: "+incidencia.getIdentificador(), 4);
 		}
-		return null;
+		throw new CustomException("No se ha especificado la incidencia a actualizar ",1);
 	}
 
 	@Override
-	public ArrayList<Incidencia> buscar(Incidencia filtro) {
+	public ArrayList<Incidencia> buscar(Incidencia filtro) throws CustomException{
 		ArrayList<Incidencia> resultado = new ArrayList<>();
 		if(filtro == null) {
-			return this.incidencias;
+			resultado = this.incidencias;
+		}else {
+			for(Incidencia incidencia:this.incidencias) {
+				if(coinciden(filtro,incidencia))
+					resultado.add(incidencia);
+			}
 		}
-		
-		for(Incidencia incidencia:this.incidencias) {
-			if(coinciden(filtro,incidencia))
-				resultado.add(incidencia);
-		}
+		if(resultado.isEmpty())
+			throw new CustomException("No se han encontrado incidencias",4);
 		
 		return resultado;
 	}
 	
-	private boolean coinciden(Incidencia incidencia1, Incidencia incidencia2) {
+	private boolean coinciden(Incidencia incidencia1, Incidencia incidencia2) throws CustomException{
 		boolean coinciden = true;
-		if (incidencia1.getIdentificador() != null) {
-			return incidencia1.getIdentificador().equals(incidencia2.getIdentificador());
-		}
+		if (incidencia1.getIdentificador() != null)
+			coinciden = coinciden && incidencia1.getIdentificador().equals(incidencia2.getIdentificador());
 		if (incidencia1.getNombreCiudadano() != null)
 			coinciden = coinciden && incidencia1.getNombreCiudadano().equals(incidencia2.getNombreCiudadano());
 		if (incidencia1.getDNI() != null)
 			coinciden = coinciden && incidencia1.getDNI().equals(incidencia2.getDNI());
+		if (incidencia1.getTelefono() != null)
+			coinciden = coinciden && incidencia1.getTelefono().equals(incidencia2.getTelefono());
 		if (incidencia1.getDescripcion() != null)
 			coinciden = coinciden && incidencia1.getDescripcion().equals(incidencia2.getDescripcion());
 		if (incidencia1.getLocalizacion() != null)
 			coinciden = coinciden && incidencia1.getLocalizacion().equals(incidencia2.getLocalizacion());
 		if (incidencia1.getTipoIncidencia() != null)
 			coinciden = coinciden && incidencia1.getTipoIncidencia().equals(incidencia2.getTipoIncidencia());
-		
-		coinciden = coinciden && (incidencia1.getProceso() == null && incidencia2.getProceso() == null);
-		
+		if(incidencia1.getProceso() != null)
+			coinciden = coinciden && incidencia1.getProceso().getIdentificador().equals(incidencia2.getProceso().getIdentificador());
 		if (incidencia1.getFechaInicio() != null)
 			coinciden = coinciden && incidencia1.getFechaInicio().equals(incidencia2.getFechaInicio());
-		
+
 		return coinciden;
-			
 	}
 
 
 	@Override
-	public ArrayList<Incidencia> obtenerIncidenciaSinAsignar() {
+	public ArrayList<Incidencia> obtenerIncidenciaSinAsignar() throws CustomException{
 		ArrayList<Incidencia> sinAsignar = new ArrayList<>();
 		for(Incidencia i:this.incidencias) {
 			if(i.getProceso() == null)
 				sinAsignar.add(i);
 		}
+		if(sinAsignar.isEmpty())
+			throw new CustomException("No se han encontrado incidencias",4);
 		return sinAsignar;
 	}
 
