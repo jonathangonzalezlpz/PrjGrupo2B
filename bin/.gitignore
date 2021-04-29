@@ -1,9 +1,6 @@
+/Exception/
 /Model/
-<<<<<<< HEAD
-/SubsistemaGestionIncidencias/
-=======
 /SubsistemaAnalisisYEstadisticas/
-/SubsistemaGestionOrdenesTrabajo/
 /SubsistemaGestionIncidencias/
+/SubsistemaGestionOrdenesTrabajo/
 /SubsistemaGestionProcesos/
->>>>>>> db66b8c782a4bda83179ed1801d95ea421412253
