@@ -57,6 +57,9 @@ public class Main {
             //Buscar
             ArrayList<Proceso> buscados=gp.buscar(inicializada);
             System.out.printf(buscados.get(0).getNombre());
+            //Actualizar
+            Proceso modificado=new Proceso(1, "Proceso1","Primer proceso del sistema",50.0,100.0,"Finalizado","Noelia","Iluminacion",null,null, new Date(2019,3,12));
+            gp.actualizar(modificado);
             //Asignar incidencias
             ArrayList<Incidencia> incidencias=gi.obtenerIncidenciaSinAsignar();
             gp.asignarIncidencia(creado,incidencias);
@@ -91,7 +94,7 @@ public class Main {
 			//Asignar ordenes de trabajo a proceso-PROCESOS
 			ArrayList<OrdenTrabajo> ordenes=got.buscar(filtro);
             gp.asignarOrdenTrabajo(creado,ordenes);
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////           
 			//ESTAD�STICAS
 			gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "pep");
 		} catch (CustomException e) {

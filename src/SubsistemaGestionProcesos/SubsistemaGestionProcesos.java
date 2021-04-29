@@ -253,12 +253,7 @@ public class SubsistemaGestionProcesos implements InterfaceSubsistemaGestionProc
 			coincidencia=coincidencia && filtro.getFechaInicio().equals(p.getFechaInicio());
 		if(filtro.getResponsable()!=null)
 			coincidencia=coincidencia && filtro.getResponsable().equals(p.getResponsable());
-		if(filtro.getIncidencias()!=null)
-			if(filtro.getIncidencias().size()==p.getIncidencias().size())
-				
-		
-		//COINCIDIR TAMÉN AS INCIDENCIAS E AS ORDES TRABALLO ?¿?¿?¿?
-		
+						
 		return coincidencia;
 	}
 	
