@@ -104,9 +104,11 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 		double coste;
 		if (distribucion == "dia") {
 			while (fechaActual.compareTo(fechaMaxima) <= 0) {
+				
 				nIncidencias = 0;
 				coste = 0.0;
 				for (Incidencia i : incidenciasFiltradas) {
+					
 					if (i.getFechaInicio().compareTo(fechaActual) == 0) {
 						nIncidencias++;
 						if (i.getProceso() != null) {
@@ -114,39 +116,44 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 						}
 					}
 				}
-				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear()+1900,
+				HMDistribucion.put(
+						fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear() + 1900,
 						new Estadistica(nIncidencias, coste / nIncidencias));
 
-				fechaActual.setTime(fechaActual.getTime()+86400000);
+				fechaActual.setDate(fechaActual.getDate() + 1);
 			}
 		} else {
 			while (fechaActual.compareTo(fechaMaxima) <= 0) {
+				
 				nIncidencias = 0;
 				coste = 0.0;
 				for (Incidencia i : incidenciasFiltradas) {
-					if (i.getFechaInicio().getTime()>= fechaActual.getTime() && i.getFechaInicio().getTime()< fechaActual.getTime()+604800000) {
+					if ((i.getFechaInicio().getTime() >= fechaActual.getTime())
+							&& (i.getFechaInicio().getTime() < (fechaActual.getTime() + 604800000))) {
+						
 						nIncidencias++;
 						if (i.getProceso() != null) {
 							coste += i.getProceso().getCoste();
 						}
 					}
 				}
-				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear()+1900,
+				HMDistribucion.put(
+						fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear() + 1900,
 						new Estadistica(nIncidencias, coste / nIncidencias));
 
 				fechaActual.setDate(fechaActual.getDate() + 7);
 			}
 		}
 		estadisticaFinal.setDistribucion(HMDistribucion);
-		int nFinal=0;
-		double costeFinal=0.0;
-		for(Estadistica e: HMDistribucion.values()) {
-			nFinal+=e.getNumeroTotal();
-			costeFinal+=e.getCoste()*e.getNumeroTotal();
+		int nFinal = 0;
+		double costeFinal = 0.0;
+		for (Estadistica e : HMDistribucion.values()) {
+			nFinal += e.getNumeroTotal();
+			costeFinal += e.getCoste() * e.getNumeroTotal();
 		}
-		if (nFinal>0) {
-			estadisticaFinal.setCoste(costeFinal/nFinal);
-		}else {
+		if ((nFinal > 0) && (costeFinal>0)) {
+			estadisticaFinal.setCoste(costeFinal / nFinal);
+		} else {
 			estadisticaFinal.setCoste(0.0);
 		}
 		estadisticaFinal.setNumeroTotal(nFinal);
@@ -154,8 +161,8 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 	}
 
 	@Override
-	public Estadistica obtenerEstadisticasProcesos(String rango, Proceso filtro, String distribucion) 
-		throws CustomException {
+	public Estadistica obtenerEstadisticasProcesos(String rango, Proceso filtro, String distribucion)
+			throws CustomException {
 
 		ArrayList<Proceso> procesos;
 		ArrayList<Proceso> procesosFiltrados = new ArrayList<>();
@@ -237,7 +244,8 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 						coste += i.getCoste();
 					}
 				}
-				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear()+1900,
+				HMDistribucion.put(
+						fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear() + 1900,
 						new Estadistica(nProcesos, coste / nProcesos));
 
 				fechaActual.setDate(fechaActual.getDate() + 1);
@@ -247,27 +255,29 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 				nProcesos = 0;
 				coste = 0.0;
 				for (Proceso i : procesosFiltrados) {
-					if (i.getFechaInicio().getTime()>= fechaActual.getTime() && i.getFechaInicio().getTime()< fechaActual.getTime()+604800000) {
+					if ((i.getFechaInicio().getTime() >= fechaActual.getTime())
+							&& (i.getFechaInicio().getTime() < (fechaActual.getTime() + 604800000))) {
 						nProcesos++;
 						coste += i.getCoste();
 					}
 				}
-				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear()+1900,
+				HMDistribucion.put(
+						fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear() + 1900,
 						new Estadistica(nProcesos, coste / nProcesos));
 
 				fechaActual.setDate(fechaActual.getDate() + 7);
 			}
 		}
 		estadisticaFinal.setDistribucion(HMDistribucion);
-		int nFinal=0;
-		double costeFinal=0.0;
-		for(Estadistica e: HMDistribucion.values()) {
-			nFinal+=e.getNumeroTotal();
-			costeFinal+=e.getCoste()*e.getNumeroTotal();
+		int nFinal = 0;
+		double costeFinal = 0.0;
+		for (Estadistica e : HMDistribucion.values()) {
+			nFinal += e.getNumeroTotal();
+			costeFinal += e.getCoste() * e.getNumeroTotal();
 		}
-		if (nFinal>0) {
-			estadisticaFinal.setCoste(costeFinal/nFinal);
-		}else {
+		if ((nFinal > 0) && (costeFinal>0)) {
+			estadisticaFinal.setCoste(costeFinal / nFinal);
+		} else {
 			estadisticaFinal.setCoste(0.0);
 		}
 		estadisticaFinal.setNumeroTotal(nFinal);
@@ -276,7 +286,7 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 
 	@Override
 	public Estadistica obtenerEstadisticasOrdenesTrabajo(String rango, OrdenTrabajo filtro, String distribucion)
-		throws CustomException {
+			throws CustomException {
 
 		ArrayList<OrdenTrabajo> ordenesTrabajo;
 		ArrayList<OrdenTrabajo> ordenesTrabajoFiltradas = new ArrayList<>();
@@ -324,23 +334,24 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 			throw new CustomException("No existen ordenes de trabajo en este rango de fechas", 1);
 		}
 		for (OrdenTrabajo i : ordenesTrabajo) {
-			Date fecha = i.getFechaInicio();
-			if (fecha.after(fecha1) && fecha.before(fecha2)) {
-				ordenesTrabajoFiltradas.add(i);
+			if (i.getFechaInicio() != null) {
+				Date fecha = i.getFechaInicio();
+				if (fecha.after(fecha1) && fecha.before(fecha2)) {
+					ordenesTrabajoFiltradas.add(i);
 
-				// Comprueba en cada iteraccion si la fecha introducida es menor que la supuesta
-				// minima
-				if (i.getFechaInicio().compareTo(fechaMinima) < 0) {
-					fechaMinima = i.getFechaInicio();
-				}
+					// Comprueba en cada iteraccion si la fecha introducida es menor que la supuesta
+					// minima
+					if (i.getFechaInicio().compareTo(fechaMinima) < 0) {
+						fechaMinima = i.getFechaInicio();
+					}
 
-				// Comprueba en cada iteraccion si la fecha introducida es mayor que la supuesta
-				// maxima
-				if (i.getFechaInicio().compareTo(fechaMaxima) > 0) {
-					fechaMaxima = i.getFechaInicio();
+					// Comprueba en cada iteraccion si la fecha introducida es mayor que la supuesta
+					// maxima
+					if (i.getFechaInicio().compareTo(fechaMaxima) > 0) {
+						fechaMaxima = i.getFechaInicio();
+					}
 				}
 			}
-
 		}
 		Estadistica estadisticaFinal = new Estadistica();
 		HashMap<String, Estadistica> HMDistribucion = new HashMap<>();
@@ -358,7 +369,8 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 						coste += i.getCoste();
 					}
 				}
-				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear()+1900,
+				HMDistribucion.put(
+						fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear() + 1900,
 						new Estadistica(nOrdenTrabajos, coste / nOrdenTrabajos));
 
 				fechaActual.setDate(fechaActual.getDate() + 1);
@@ -368,27 +380,29 @@ public class SubsistemaAnalisisEstadisticas implements InterfaceSubsistemaAnalis
 				nOrdenTrabajos = 0;
 				coste = 0.0;
 				for (OrdenTrabajo i : ordenesTrabajoFiltradas) {
-					if (i.getFechaInicio().getTime()>= fechaActual.getTime() && i.getFechaInicio().getTime()< fechaActual.getTime()+604800000) {
+					if ((i.getFechaInicio().getTime() >= fechaActual.getTime())
+							&& (i.getFechaInicio().getTime() < (fechaActual.getTime() + 604800000))) {
 						nOrdenTrabajos++;
 						coste += i.getCoste();
 					}
 				}
-				HMDistribucion.put(fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear()+1900,
+				HMDistribucion.put(
+						fechaActual.getDay() + "/" + fechaActual.getMonth() + "/" + fechaActual.getYear() + 1900,
 						new Estadistica(nOrdenTrabajos, coste / nOrdenTrabajos));
 
 				fechaActual.setDate(fechaActual.getDate() + 7);
 			}
 		}
 		estadisticaFinal.setDistribucion(HMDistribucion);
-		int nFinal=0;
-		double costeFinal=0.0;
-		for(Estadistica e: HMDistribucion.values()) {
-			nFinal+=e.getNumeroTotal();
-			costeFinal+=e.getCoste()*e.getNumeroTotal();
+		int nFinal = 0;
+		double costeFinal = 0.0;
+		for (Estadistica e : HMDistribucion.values()) {
+			nFinal += e.getNumeroTotal();
+			costeFinal += e.getCoste() * e.getNumeroTotal();
 		}
-		if (nFinal>0) {
-			estadisticaFinal.setCoste(costeFinal/nFinal);
-		}else {
+		if ((nFinal > 0) && (costeFinal>0)) {
+			estadisticaFinal.setCoste(costeFinal / nFinal);
+		} else {
 			estadisticaFinal.setCoste(0.0);
 		}
 		estadisticaFinal.setNumeroTotal(nFinal);
