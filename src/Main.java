@@ -96,9 +96,9 @@ public class Main {
             gp.asignarOrdenTrabajo(creado,ordenes);
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////           
 			//ESTAD�STICAS
-			gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "semana");
-			gu.obtenerEstadisticasOrdenesTrabajo("15/3/2002-15/4/2002", null, "dia");
-			gu.obtenerEstadisticasProcesos("15/3/2002-15/4/2002", null, "semana");
+			System.out.println("Coste incidencias: "+gu.obtenerEstadisticasIncidencias("15/3/2002-15/4/2002", null, "semana").getCoste());
+			System.out.println("Coste procesos: "+gu.obtenerEstadisticasProcesos("15/3/2002-15/4/2002", null, "semana").getCoste());
+			System.out.println("Coste procesos: "+gu.obtenerEstadisticasOrdenesTrabajo("15/3/2002-15/4/2002", null, "dia").getCoste());
 		} catch (CustomException e) {
 			e.printStackTrace();
 		}
